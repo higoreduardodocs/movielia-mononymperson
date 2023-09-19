@@ -17,7 +17,7 @@ export default function Film() {
         <Image className="rounded-none" />
       </div>
       {/* POSTER */}
-      <Container className="flex">
+      <Container className="flex mobile:flex-col">
         <Image className="w-[200px] h-[300px] min-w-[200px]" />
         <div className="flex flex-col gap-3 px-3">
           <p className="text-xl line-clamp-1">
@@ -41,11 +41,11 @@ export default function Film() {
       </Container>
       {/* CAST */}
       <Heading title="Elenco" />
-      <Container>
-        <div className="flex items-center justify-center flex-wrap gap-3">
+      <Container className="overflow-x-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-header">
+        <div className="flex items-center gap-3">
           {Array.from({ length: 8 }, (_, k) => k + 1).map((item) => 
-            <div className="flex-shrink-0 w-[200px]">
-              <Card key={item}>
+            <div key={item} className="flex-shrink-0 w-[200px]">
+              <Card >
                 <p className="font-semibold">Harrison Ford</p>
                 <p className="text-sm opacity-90">Indiana Jones</p>
               </Card>
@@ -58,8 +58,8 @@ export default function Film() {
       <Container className="overflow-x-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-header">
         <div className="flex items-center gap-3">
           {Array.from({ length: 8 }, (_, k) => k + 1).map((item) => 
-            <div className="flex-shrink-0 w-[200px]">
-              <Card key={item} />
+            <div key={item} className="flex-shrink-0 w-[200px]">
+              <Card />
             </div>
           )}
         </div>

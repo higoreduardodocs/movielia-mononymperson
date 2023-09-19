@@ -9,9 +9,9 @@ export default function Home() {
   return (
     <Container>
       {/* HERO */}
-      <Slider>{(onSwipe: boolean) => <NoResults />}</Slider>
+      <Slider>{() => <NoResults />}</Slider>
       <Slider className="slick-hero">
-        {(onSwipe: boolean) =>
+        {() =>
           Array.from({ length: 4 }, (_, k) => k + 1).map((item) => (
             <Hero key={item} />
           ))

@@ -8,6 +8,9 @@ export default {
         primary: '#423F71',
         body: '#1C1B29',
       },
+      screens: {
+        mobile: { max: '768px' },
+      },
     },
   },
   plugins: [require('tailwind-scrollbar')],

@@ -12,8 +12,8 @@ export default function Season() {
       </div>
 
       {/* POSTER */}
-      <Container className="flex gap-3">
-        <Image className="w-[150px]" />
+      <Container className="flex gap-3 mobile:flex-col">
+        <Image className="w-[150px] md:max-w-[150px]" />
         <div className="flex flex-col items-start gap-3">
           <p className="text-xl line-clamp-1">
             Indiana Jones e A Relíquia do Destino
@@ -28,12 +28,13 @@ export default function Season() {
       <Heading title="Episódios" />
       <Container>
         {Array.from({ length: 10 }, (_, k) => k + 1).map((item) => (
-          <div key={item} className="flex items-stretch gap-3 px-3 py-1.5 rounded-md cursor-pointer hover:bg-primary">
-            <Image className="w-[300px] min-w-[300px]" />
+          <div key={item} className="flex items-stretch mobile:flex-col gap-3 px-3 py-1.5 rounded-md cursor-pointer hover:bg-primary">
+            <Image className="w-[300px] md:min-w-[300px] max-w-[300px] mobile:mx-auto" />
             <div>
               <p className="text-lg truncate">
                 {item}. Indiana Jones e A Relíquia do Destino
               </p>
+              <p className="font-semibold text-sm opacity-90">29/06/2023</p>
               <p className="text-sm line-clamp-5">
                 Encontrando-se em uma nova era, aproximando-se da aposentadoria,
                 Indy luta para se encaixar em um mundo que parece tê-lo
@@ -42,7 +43,6 @@ export default function Season() {
                 chapéu e pegar seu chicote mais uma vez para garantir que um
                 antigo e poderoso artefato não caia nas mãos erradas.
               </p>
-              <p className="text-sm opacity-90">29/06/2023</p>
             </div>
           </div>
         ))}

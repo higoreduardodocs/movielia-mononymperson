@@ -11,7 +11,7 @@ export default function Hero() {
       </div>
 
       <div className="flex flex-col gap-3 items-start mx-[55px] max-w-[50%] z-10">
-        <p className="text-xl line-clamp-1">
+        <p className="text-xl md:line-clamp-1">
           Indiana Jones e A Relíquia do Destino
         </p>
         <p className="text-sm line-clamp-3">

@@ -20,7 +20,7 @@ export default function Header() {
           <Link to="/" className="font-semibold text-2xl">
             Movie
           </Link>
-          <div className="flex items-center gap-1.5">
+          <div className="mobile:fixed mobile:bottom-0 mobile:left-0 mobile:right-0 flex items-center mobile:justify-center gap-1.5 mobile:w-full mobile:bg-header mobile:py-3">
             <Link to="/movies" className={getClassName('movies')}>Filmes</Link>
             <Link to="/tv" className={getClassName('tv')}>TV</Link>
           </div>
