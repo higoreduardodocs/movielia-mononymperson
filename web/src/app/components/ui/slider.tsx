@@ -49,6 +49,8 @@ export default function Slider(props: IProps) {
       autoplaySpeed={5000}
       onSwipe={() => setOnSwipe(true)}
       afterChange={() => setOnSwipe(false)}
+      slidesToShow={1}
+      slidesToScroll={1}
       {...settings}
     >
       {props.children && props.children(onSwipe)}

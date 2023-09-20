@@ -1,3 +1,10 @@
+import {
+  usePopulars,
+  useTheaters,
+  useTopRated,
+  useWeekTrending,
+} from '../../hooks/use-films'
+import { mergeFilms } from '../../utils/format'
 import Card from '../components/ui/card'
 import Container from '../components/ui/container'
 import Heading from '../components/ui/heading'
@@ -6,51 +13,74 @@ import NoResults from '../components/ui/no-results'
 import Slider from '../components/ui/slider'
 
 export default function Home() {
+  const trendings = mergeFilms(useWeekTrending('movie'), useWeekTrending('tv'))
+  const theaters = useTheaters()
+  const populars = mergeFilms(usePopulars('movie'), usePopulars('tv'))
+  const topRatedTv = useTopRated('tv')
+  const topRatedMovie = useTopRated('movie')
+
   return (
     <Container>
       {/* HERO */}
-      <Slider>{() => <NoResults />}</Slider>
-      <Slider className="slick-hero">
+      <Slider className="slick-hero" autoplay={true}>
         {() =>
-          Array.from({ length: 4 }, (_, k) => k + 1).map((item) => (
-            <Hero key={item} />
-          ))
+          !trendings?.length ? (
+            <NoResults />
+          ) : (
+            trendings.map((item) => <Hero key={item.id} film={item} />)
+          )
         }
       </Slider>
       {/* THEATERS */}
       <Heading title="Em cartaz" />
       <Slider isMovieCard>
         {() =>
-          Array.from({ length: 15 }, (_, k) => k + 1).map((item) => (
-            <Card key={item} />
-          ))
+          !theaters?.length ? (
+            <NoResults />
+          ) : (
+            theaters.map((item) => (
+              <Card key={item.id} src={item.coverPath} title={item.title} />
+            ))
+          )
         }
       </Slider>
       {/* POPULAR */}
       <Heading title="Populares" />
       <Slider isMovieCard>
         {() =>
-          Array.from({ length: 15 }, (_, k) => k + 1).map((item) => (
-            <Card key={item} />
-          ))
+          !populars?.length ? (
+            <NoResults />
+          ) : (
+            populars.map((item) => (
+              <Card key={item.id} src={item.coverPath} title={item.title} />
+            ))
+          )
         }
       </Slider>
       {/* TOP RATED TV */}
       <Heading title="Melhores da TV" />
       <Slider isMovieCard>
         {() =>
-          Array.from({ length: 15 }, (_, k) => k + 1).map((item) => (
-            <Card key={item} />
-          ))
+          !topRatedTv?.length ? (
+            <NoResults />
+          ) : (
+            topRatedTv.map((item) => (
+              <Card key={item.id} src={item.coverPath} title={item.title} />
+            ))
+          )
         }
       </Slider>
       {/* TOP RATEDMOVIE */}
       <Heading title="Melhores filmes" />
       <Slider isMovieCard>
         {() =>
-          Array.from({ length: 15 }, (_, k) => k + 1).map((item) => (
-            <Card key={item} />
-          ))
+          !topRatedMovie?.length ? (
+            <NoResults />
+          ) : (
+            topRatedMovie.map((item) => (
+              <Card key={item.id} src={item.coverPath} title={item.title} />
+            ))
+          )
         }
       </Slider>
     </Container>
