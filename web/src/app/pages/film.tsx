@@ -16,6 +16,7 @@ import Image from '../components/ui/image'
 import Loading from '../components/ui/loading'
 import Slider from '../components/ui/slider'
 import Trailler from '../components/ui/trailler'
+import GenderList from '../components/ui/gender-list'
 
 interface IProps {
   mediaType: MediaType
@@ -58,20 +59,7 @@ export default function Film(props: IProps) {
             />
             <div className="flex flex-col gap-3 px-3">
               <p className="text-xl line-clamp-1">{film.title}</p>
-              <ul className="flex items-center gap-3">
-                <li className="text-sm px-3 py-1.5 bg-primary rounded-lg">
-                  Aventura
-                </li>
-                <li className="text-sm px-3 py-1.5 bg-primary rounded-lg">
-                  Suspense
-                </li>
-                <li className="text-sm px-3 py-1.5 bg-primary rounded-lg">
-                  Drama
-                </li>
-                <li className="text-sm px-3 py-1.5 bg-primary rounded-lg">
-                  Ação
-                </li>
-              </ul>
+              <GenderList />
               <p className="text-sm line-clamp-3 opacity-90">
                 {film.description}
               </p>

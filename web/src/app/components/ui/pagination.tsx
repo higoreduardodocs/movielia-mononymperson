@@ -11,7 +11,7 @@ export default function Pagination() {
   return (
     <div className="flex items-center justify-end gap-2 px-3">
       {Array.from({ length: 7 }, (_, k) => k + 1).map((item) => 
-        <button className={getClassName(item)}>{item}</button>
+        <button key={item} className={getClassName(item)}>{item}</button>
       )}
     </div>
   )

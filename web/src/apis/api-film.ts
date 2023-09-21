@@ -1,7 +1,8 @@
 import { AxiosResponse } from 'axios'
 
 import api from '../libs/api'
-import { ITrailler, MediaType } from '../types/film-types'
+import { IFilm, ITrailler, MediaType } from '../types/film-types'
+import { formatFilmResponse } from '../utils/format'
 
 export const apiTrailler = async (
   mediaType: MediaType,
@@ -18,6 +19,33 @@ export const apiTrailler = async (
         .filter((item: any) => item.site.toLowerCase() === 'youtube')
         .map((item: any) => ({ id: item.id, key: item.key })) ?? []
     )
+  } catch (err) {
+    console.log(err)
+    throw err
+  }
+}
+
+export const apiSearch = async (
+  query: string,
+  page = 1
+): Promise<{ totalPages: number; totalResults: number; films: IFilm[] }> => {
+  try {
+    const { data } = await api.get<
+      unknown,
+      AxiosResponse<{
+        total_pages: number
+        total_results: number
+        results: unknown[]
+      }>
+    >(`/search/multi`, {
+      params: { query, page },
+    })
+
+    return {
+      totalPages: data.total_pages,
+      totalResults: data.total_results,
+      films: data.results.map((item) => formatFilmResponse(item)),
+    }
   } catch (err) {
     console.log(err)
     throw err

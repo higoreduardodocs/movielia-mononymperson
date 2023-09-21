@@ -14,7 +14,7 @@ export default function Search() {
       <Pagination />
       <Container className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 grid-cols-1">
         {Array.from({ length: 15 }, (_, k) => k + 1).map((item) => (
-          <Card key={item} />
+          <Card key={item} src="" />
         ))}
       </Container>
       <Pagination />
