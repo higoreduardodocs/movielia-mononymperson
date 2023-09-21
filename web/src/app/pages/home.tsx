@@ -1,18 +1,22 @@
+import { useNavigate } from 'react-router-dom'
+
 import {
   usePopulars,
   useTheaters,
   useTopRated,
   useWeekTrending,
 } from '../../hooks/use-films'
-import { mergeFilms } from '../../utils/format'
+import { imageSrc, mergeFilms } from '../../utils/format'
 import Card from '../components/ui/card'
 import Container from '../components/ui/container'
 import Heading from '../components/ui/heading'
 import Hero from '../components/ui/hero'
 import NoResults from '../components/ui/no-results'
 import Slider from '../components/ui/slider'
+import Trailler from '../components/ui/trailler'
 
 export default function Home() {
+  const navigate = useNavigate()
   const trendings = mergeFilms(useWeekTrending('movie'), useWeekTrending('tv'))
   const theaters = useTheaters()
   const populars = mergeFilms(usePopulars('movie'), usePopulars('tv'))
@@ -21,13 +25,23 @@ export default function Home() {
 
   return (
     <Container>
+      <Trailler />
       {/* HERO */}
       <Slider className="slick-hero" autoplay={true}>
-        {() =>
+        {(onSwipe: boolean) =>
           !trendings?.length ? (
             <NoResults />
           ) : (
-            trendings.map((item) => <Hero key={item.id} film={item} />)
+            trendings?.map((item) => (
+              <Hero
+                key={item.id}
+                film={item}
+                onClick={() => {
+                  !onSwipe
+                  navigate(`/${item.mediaType}/${item.id}`)
+                }}
+              />
+            ))
           )
         }
       </Slider>
@@ -38,8 +52,14 @@ export default function Home() {
           !theaters?.length ? (
             <NoResults />
           ) : (
-            theaters.map((item) => (
-              <Card key={item.id} src={item.coverPath} title={item.title} />
+            theaters?.map((item) => (
+              <Card
+                key={item.id}
+                src={imageSrc(item.coverPath)!}
+                title={item.title}
+                isPlayer
+                onClick={() => navigate(`/${item.mediaType}/${item.id}`)}
+              />
             ))
           )
         }
@@ -51,8 +71,14 @@ export default function Home() {
           !populars?.length ? (
             <NoResults />
           ) : (
-            populars.map((item) => (
-              <Card key={item.id} src={item.coverPath} title={item.title} />
+            populars?.map((item) => (
+              <Card
+                key={item.id}
+                src={imageSrc(item.coverPath)!}
+                title={item.title}
+                isPlayer
+                onClick={() => navigate(`/${item.mediaType}/${item.id}`)}
+              />
             ))
           )
         }
@@ -64,8 +90,14 @@ export default function Home() {
           !topRatedTv?.length ? (
             <NoResults />
           ) : (
-            topRatedTv.map((item) => (
-              <Card key={item.id} src={item.coverPath} title={item.title} />
+            topRatedTv?.map((item) => (
+              <Card
+                key={item.id}
+                src={imageSrc(item.coverPath)!}
+                title={item.title}
+                isPlayer
+                onClick={() => navigate(`/${item.mediaType}/${item.id}`)}
+              />
             ))
           )
         }
@@ -77,8 +109,14 @@ export default function Home() {
           !topRatedMovie?.length ? (
             <NoResults />
           ) : (
-            topRatedMovie.map((item) => (
-              <Card key={item.id} src={item.coverPath} title={item.title} />
+            topRatedMovie?.map((item) => (
+              <Card
+                key={item.id}
+                src={imageSrc(item.coverPath)!}
+                title={item.title}
+                isPlayer
+                onClick={() => navigate(`/${item.mediaType}/${item.id}`)}
+              />
             ))
           )
         }

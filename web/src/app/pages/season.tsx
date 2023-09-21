@@ -1,52 +1,58 @@
+import { useNavigate, useParams } from 'react-router-dom'
+
+import { useSeason } from '../../hooks/use-films'
 import Container from '../components/ui/container'
 import Heading from '../components/ui/heading'
 import Image from '../components/ui/image'
+import Loading from '../components/ui/loading'
+import { formatDate, imageSrc } from '../../utils/format'
 
 export default function Season() {
+  const navigate = useNavigate()
+  const params = useParams()
+  const season = useSeason(
+    parseInt(params.id as string),
+    parseInt(params.seasonNumber as string)
+  )
+  
   return (
-    <>
+    !season ? (
+      <div className="p-6">
+        <Loading />
+      </div>
+    ) : (
+      <>
       {/* COVER */}
       <div className="relative h-[300px]">
         <div className="overlay-film-cover" />
-        <Image className="rounded-none" />
+        <Image src={imageSrc(season.posterPath) || ''} className="rounded-none" />
       </div>
-
       {/* POSTER */}
       <Container className="flex gap-3 mobile:flex-col">
-        <Image className="w-[150px] md:max-w-[150px]" />
+        <Image src={imageSrc(season.posterPath) || ''} className="w-[150px] md:max-w-[150px]" />
         <div className="flex flex-col items-start gap-3">
-          <p className="text-xl line-clamp-1">
-            Indiana Jones e A Relíquia do Destino
-          </p>
+          <p className="text-xl line-clamp-1">{season.fileName}</p>
           <div className="flex items-center gap-3">
-            <p className="text-sm opacity-90">29/06/2023</p>
-            <p className="text-sm opacity-90">&#8226;10 Episódios</p>
+            <p className="text-sm opacity-90">{season.name} ({new Date(season.airDate).getFullYear()})</p>
+            <p className="text-sm opacity-90">&#8226; {season.episodes?.length} Episódios</p>
           </div>
         </div>
       </Container>
       {/* EPISODES */}
       <Heading title="Episódios" />
       <Container>
-        {Array.from({ length: 10 }, (_, k) => k + 1).map((item) => (
-          <div key={item} className="flex items-stretch mobile:flex-col gap-3 px-3 py-1.5 rounded-md cursor-pointer hover:bg-primary">
-            <Image className="w-[300px] md:min-w-[300px] max-w-[300px] mobile:mx-auto" />
+        {season?.episodes?.map((item) => (
+          <div key={item.id} onClick={() => navigate(`/tv/${item.id}`)} className="flex items-stretch mobile:flex-col gap-3 px-3 py-1.5 rounded-md cursor-pointer hover:bg-primary">
+            <Image src={imageSrc(item.stillPath) || ''} className="w-[300px] md:min-w-[300px] max-w-[300px] mobile:mx-auto" />
             <div>
-              <p className="text-lg truncate">
-                {item}. Indiana Jones e A Relíquia do Destino
-              </p>
-              <p className="font-semibold text-sm opacity-90">29/06/2023</p>
-              <p className="text-sm line-clamp-5">
-                Encontrando-se em uma nova era, aproximando-se da aposentadoria,
-                Indy luta para se encaixar em um mundo que parece tê-lo
-                superado. Mas quando os tentáculos de um mal muito familiar
-                retornam na forma de um antigo rival, Indy deve colocar seu
-                chapéu e pegar seu chicote mais uma vez para garantir que um
-                antigo e poderoso artefato não caia nas mãos erradas.
-              </p>
+              <p className="text-lg truncate">{item.episodeNumber}. {item.title}</p>
+              <p className="font-semibold text-sm opacity-90">{formatDate(item.airDate)}</p>
+              <p className="text-sm line-clamp-5">{item.overview}</p>
             </div>
           </div>
         ))}
       </Container>
-    </>
+      </>
+    )
   )
 }

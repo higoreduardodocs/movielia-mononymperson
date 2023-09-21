@@ -1,87 +1,153 @@
+import { useNavigate, useParams } from 'react-router-dom'
+
+import { MediaType } from '../../types/film-types'
+import useApp from '../../hooks/use-app'
+import {
+  useCasts,
+  useDetail,
+  useRecommedations,
+  useTraillers,
+} from '../../hooks/use-films'
+import { imageSrc, youtubeImageSrc } from '../../utils/format'
 import Card from '../components/ui/card'
 import Container from '../components/ui/container'
 import Heading from '../components/ui/heading'
 import Image from '../components/ui/image'
 import Loading from '../components/ui/loading'
 import Slider from '../components/ui/slider'
+import Trailler from '../components/ui/trailler'
 
-export default function Film() {
+interface IProps {
+  mediaType: MediaType
+}
+
+export default function Film(props: IProps) {
+  const navigate = useNavigate()
+  const params = useParams()
+  const { setTrailler } = useApp()
+  const film = useDetail(props.mediaType, parseInt(params.id as string))
+  const casts = useCasts(props.mediaType, parseInt(params.id as string))
+  const traillers = useTraillers(props.mediaType, parseInt(params.id as string))
+  const recommedations = useRecommedations(
+    props.mediaType,
+    parseInt(params.id as string)
+  )
+
+  const handleTrailler = (key: string) =>
+    setTrailler(`https://www.youtube.com/embed/${key}?autoplay=1`)
+
   return (
     <>
-      <div className="p-6">
-        <Loading />
-      </div>
-      {/* COVER */}
-      <div className="h-[300px] relative">
-        <div className="overlay-film-cover" />
-        <Image className="rounded-none" />
-      </div>
-      {/* POSTER */}
-      <Container className="flex mobile:flex-col">
-        <Image className="w-[200px] h-[300px] min-w-[200px]" />
-        <div className="flex flex-col gap-3 px-3">
-          <p className="text-xl line-clamp-1">
-            Indiana Jones e A Relíquia do Destino
-          </p>
-          <ul className="flex items-center gap-3">
-            <li className="text-sm px-3 py-1.5 bg-primary rounded-lg">Aventura</li>
-            <li className="text-sm px-3 py-1.5 bg-primary rounded-lg">Suspense</li>
-            <li className="text-sm px-3 py-1.5 bg-primary rounded-lg">Drama</li>
-            <li className="text-sm px-3 py-1.5 bg-primary rounded-lg">Ação</li>
-          </ul>
-          <p className="text-sm line-clamp-3 opacity-90">
-            Encontrando-se em uma nova era, aproximando-se da aposentadoria,
-            Indy luta para se encaixar em um mundo que parece tê-lo superado.
-            Mas quando os tentáculos de um mal muito familiar retornam na forma
-            de um antigo rival, Indy deve colocar seu chapéu e pegar seu chicote
-            mais uma vez para garantir que um antigo e poderoso artefato não
-            caia nas mãos erradas.
-          </p>
+      <Trailler />
+      {!film ? (
+        <div className="p-6">
+          <Loading />
         </div>
-      </Container>
-      {/* CAST */}
-      <Heading title="Elenco" />
-      <Container className="overflow-x-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-header">
-        <div className="flex items-center gap-3">
-          {Array.from({ length: 8 }, (_, k) => k + 1).map((item) => 
-            <div key={item} className="flex-shrink-0 w-[200px]">
-              <Card >
-                <p className="font-semibold">Harrison Ford</p>
-                <p className="text-sm opacity-90">Indiana Jones</p>
-              </Card>
+      ) : (
+        <>
+          {/* COVER */}
+          <div className="h-[300px] relative">
+            <div className="overlay-film-cover" />
+            <Image src={imageSrc(film.coverPath)!} className="rounded-none" />
+          </div>
+          {/* POSTER */}
+          <Container className="flex mobile:flex-col">
+            <Image
+              src={imageSrc(film.posterPath)!}
+              className="w-[200px] h-[300px] min-w-[200px] max-w-[200px]"
+            />
+            <div className="flex flex-col gap-3 px-3">
+              <p className="text-xl line-clamp-1">{film.title}</p>
+              <ul className="flex items-center gap-3">
+                <li className="text-sm px-3 py-1.5 bg-primary rounded-lg">
+                  Aventura
+                </li>
+                <li className="text-sm px-3 py-1.5 bg-primary rounded-lg">
+                  Suspense
+                </li>
+                <li className="text-sm px-3 py-1.5 bg-primary rounded-lg">
+                  Drama
+                </li>
+                <li className="text-sm px-3 py-1.5 bg-primary rounded-lg">
+                  Ação
+                </li>
+              </ul>
+              <p className="text-sm line-clamp-3 opacity-90">
+                {film.description}
+              </p>
             </div>
-          )}
-        </div>
-      </Container>
-      {/* TRAILLERS */}
-      <Heading title="Traillers" />
-      <Container className="overflow-x-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-header">
-        <div className="flex items-center gap-3">
-          {Array.from({ length: 8 }, (_, k) => k + 1).map((item) => 
-            <div key={item} className="flex-shrink-0 w-[200px]">
-              <Card />
+          </Container>
+          {/* CAST */}
+          <Heading title="Elenco" />
+          <Container className="overflow-x-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-header">
+            <div className="flex items-center gap-3">
+              {casts?.map((item) => (
+                <Card
+                  key={item.id}
+                  src={imageSrc(item.profilePath)!}
+                  className="flex-shrink-0 w-[200px]"
+                >
+                  <p className="font-semibold">{item.name}</p>
+                  <p className="text-sm opacity-90">{item.characterName}</p>
+                </Card>
+              ))}
             </div>
-          )}
-        </div>
-      </Container>
-      {/* SEASONS */}
-      <Heading title="Temporadas" />
-      <Container>
-        <Slider slidesToShow={2} slidesToScroll={2} swipe={false}>
-          {() => Array.from({ length: 8 }, (_, k) => k + 1).map((item) => 
-            <Card key={item} className="h-[300px]" />
-          )}
-        </Slider>
-      </Container>
-      {/* RECOMMENDATIONS */}
-      <Heading title="Recomendados" />
-      <Container>
-        <Slider isMovieCard>
-          {() => Array.from({ length: 8 }, (_, k) => k + 1).map((item) => 
-            <Card key={item} className="h-[300px]" />
-          )}
-        </Slider>
-      </Container>
+          </Container>
+          {/* TRAILLERS */}
+          <Heading title="Traillers" />
+          <Container className="overflow-x-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-header">
+            <div className="flex items-center gap-3">
+              {traillers?.map((item) => (
+                <Card
+                  key={item.id}
+                  src={youtubeImageSrc(item.key) || ''}
+                  className="flex-shrink-0 w-[200px]"
+                  isPlayer
+                  onClick={() => handleTrailler(item.key)}
+                />
+              ))}
+            </div>
+          </Container>
+          {/* SEASONS */}
+          <Heading title="Temporadas" />
+          <Container>
+            <Slider
+              slidesToShow={film.seasons.length > 2 ? 2 : 1}
+              slidesToScroll={film.seasons.length > 2 ? 2 : 1}
+              swipe={false}
+            >
+              {() =>
+                film?.seasons?.map((item) => (
+                  <Card
+                    key={item.id}
+                    src={imageSrc(item.posterPath) || ''}
+                    title={item.name}
+                    onClick={() => navigate(`/tv/${item.id}/season/${item.seasonNumber}`)}
+                  />
+                ))
+              }
+            </Slider>
+          </Container>
+          {/* RECOMMENDATIONS */}
+          <Heading title="Recomendados" />
+          <Container>
+            <Slider isMovieCard>
+              {() =>
+                recommedations?.map((item) => (
+                  <Card
+                    key={item.id}
+                    src={imageSrc(item.posterPath) || ''}
+                    title={item.title}
+                    className="h-[300px]"
+                    isPlayer
+                    onClick={() => navigate(`/${item.mediaType}/${item.id}`)}
+                  />
+                ))
+              }
+            </Slider>
+          </Container>
+        </>
+      )}
     </>
   )
 }

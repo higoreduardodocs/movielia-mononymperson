@@ -19,8 +19,8 @@ export default function App() {
             <Route path="/tv" element={<Search />} />
             <Route path="/search" element={<Search />} />
 
-            <Route path="movies/:id" element={<Film />} />
-            <Route path="tv/:id" element={<Film />} />
+            <Route path="movie/:id" element={<Film mediaType='movie' />} />
+            <Route path="tv/:id" element={<Film mediaType='tv' />} />
 
             <Route path="/tv/:id/season/:seasonNumber" element={<Season />} />
           </Route>

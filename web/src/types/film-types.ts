@@ -29,3 +29,15 @@ export interface IEpisode {
   episodeNumber: number
   airDate: string
 }
+
+export interface ITrailler {
+  id: number
+  key: string
+}
+
+export interface ICast {
+  id: number
+  name: string
+  characterName: string
+  profilePath: string
+}

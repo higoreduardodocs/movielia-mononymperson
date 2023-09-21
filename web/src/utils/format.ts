@@ -56,3 +56,19 @@ export const imageSrc = (path: string) => {
   if (!path) return
   return `https://image.tmdb.org/t/p/original/${path}`
 }
+
+export const youtubeImageSrc = (path: string) => {
+  if (!path) return
+  return `https://img.youtube.com/vi/${path}/mqdefault.jpg`
+}
+
+export const formatDate = (val: string) => {
+  const d = new Date(val)
+
+  return (
+    d.getDate().toString() +
+    '/' +
+    (d.getMonth() + 1).toString() +
+    d.getFullYear().toString()
+  )
+}
