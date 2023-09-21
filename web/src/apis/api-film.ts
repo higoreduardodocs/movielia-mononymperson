@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
 
 import api from '../libs/api'
-import { IFilm, ITrailler, MediaType } from '../types/film-types'
+import { IFilm, IGender, ITrailler, MediaType } from '../types/film-types'
 import { formatFilmResponse } from '../utils/format'
 
 export const apiTrailler = async (
@@ -46,6 +46,20 @@ export const apiSearch = async (
       totalResults: data.total_results,
       films: data.results.map((item) => formatFilmResponse(item)),
     }
+  } catch (err) {
+    console.log(err)
+    throw err
+  }
+}
+
+export const apiGenders = async (mediaType: MediaType): Promise<IGender[]> => {
+  try {
+    const { data } = await api.get<
+      unknown,
+      AxiosResponse<{ genres: unknown[] }>
+    >(`/genre/${mediaType}/list`)
+
+    return data?.genres as IGender[]
   } catch (err) {
     console.log(err)
     throw err

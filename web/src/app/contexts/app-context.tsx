@@ -1,22 +1,46 @@
-import { ReactNode, createContext, useState } from 'react'
+import { ReactNode, createContext, useEffect, useState } from 'react'
 
-export const AppContext = createContext({
-  trailler: '',
-  setTrailler: (value: string) => {},
-  page: 1,
-  setPage: (value: number) => {},
-})
+import { IGender, MediaType } from '../../types/film-types'
+import { apiGenders } from '../../apis/api-film'
 
 interface IProps {
   children: ReactNode
 }
 
+type Genders = {
+  [key in MediaType]: IGender[]
+}
+
+export const AppContext = createContext<{
+  trailler: string
+  setTrailler: (value: string) => void
+  page: number
+  setPage: (value: number) => void
+  genders: Genders
+}>({
+  trailler: '',
+  setTrailler: () => {},
+  page: 1,
+  setPage: () => {},
+  genders: { movie: [], tv: [] },
+})
+
 export default function AppContextProvider({ children }: IProps) {
   const [trailler, setTrailler] = useState<string>('')
   const [page, setPage] = useState<number>(1)
+  const [genders, setGenders] = useState<Genders>({ movie: [], tv: [] })
+
+  const fetch = async () => {
+    setGenders({ movie: await apiGenders('movie'), tv: await apiGenders('tv') })
+  }
+  useEffect(() => {
+    fetch()
+  }, [])
 
   return (
-    <AppContext.Provider value={{ trailler, setTrailler, page, setPage }}>
+    <AppContext.Provider
+      value={{ trailler, setTrailler, page, setPage, genders }}
+    >
       {children}
     </AppContext.Provider>
   )

@@ -41,3 +41,8 @@ export interface ICast {
   characterName: string
   profilePath: string
 }
+
+export interface IGender {
+  id: number
+  name: string
+}
