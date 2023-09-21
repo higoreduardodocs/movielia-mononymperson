@@ -23,6 +23,7 @@ export default function SearchResults(props: IProps) {
     const { films, totalResults } = await apiSearch(props.searchKeyword)
     setFilms(films)
     setTotalResults(totalResults)
+    console.log(films)
   }
   useEffect(() => {
     fetch()
@@ -39,7 +40,7 @@ export default function SearchResults(props: IProps) {
               <Image src={imageSrc(item.coverPath) || ''} className="w-[100px] h-[190px]" />
               <div className="flex flex-col gap-2 w-[200px] max-w-[200px]">
                 <p className="text-base truncate">{item.title}</p>
-                <GenderList />
+                <GenderList genders={item.genderIds} mediaType={item.mediaType} />
                 <p className="text-sm line-clamp-4">{item.description}</p>
               </div>
             </div>

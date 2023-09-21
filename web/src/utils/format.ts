@@ -5,12 +5,12 @@ export const mergeClassName = (first: string, last?: string) =>
 
 export const formatFilmResponse = (obj: any, mediaType?: MediaType): IFilm => ({
   id: obj.id,
-  mediaType: mediaType || obj.mediaType,
+  mediaType: mediaType || obj.media_type,
   title: obj.title || obj.name,
   description: obj.overview,
   posterPath: obj.poster_path,
   coverPath: obj.backdrop_path,
-  genderIds: obj.genre_ids,
+  genderIds: obj.genres?.map((item: any) => item.id) ?? obj.genre_ids,
   seasons:
     obj?.seasons?.map(
       (item: any) =>

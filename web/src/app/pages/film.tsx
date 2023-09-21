@@ -59,7 +59,7 @@ export default function Film(props: IProps) {
             />
             <div className="flex flex-col gap-3 px-3">
               <p className="text-xl line-clamp-1">{film.title}</p>
-              <GenderList />
+              <GenderList genders={film.genderIds} mediaType={film.mediaType} />
               <p className="text-sm line-clamp-3 opacity-90">
                 {film.description}
               </p>
@@ -110,7 +110,9 @@ export default function Film(props: IProps) {
                     key={item.id}
                     src={imageSrc(item.posterPath) || ''}
                     title={item.name}
-                    onClick={() => navigate(`/tv/${item.id}/season/${item.seasonNumber}`)}
+                    onClick={() =>
+                      navigate(`/tv/${item.id}/season/${item.seasonNumber}`)
+                    }
                   />
                 ))
               }

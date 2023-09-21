@@ -1,14 +1,21 @@
+import useApp from '../../../hooks/use-app'
+import { MediaType } from '../../../types/film-types'
+
 interface IProps {
   genders: number[]
+  mediaType: MediaType
 }
 
-export default function GenderList() {
+export default function GenderList(props: IProps) {
+  const { genders } = useApp()
+
   return (
     <ul className="flex flex-wrap items-center gap-1">
-      <li className="text-sm p-1 bg-zinc-950 rounded-md">Aventura</li>
-      <li className="text-sm p-1 bg-zinc-950 rounded-md">Suspense</li>
-      <li className="text-sm p-1 bg-zinc-950 rounded-md">Drama</li>
-      <li className="text-sm p-1 bg-zinc-950 rounded-md">Ação</li>
+      {props.genders?.map((item, key) => (
+        <li key={key} className="text-sm p-1 bg-zinc-950 rounded-md">
+          {genders[props.mediaType]?.find((i) => i.id === item)?.name}
+        </li>
+      ))}
     </ul>
   )
 }
