@@ -72,3 +72,6 @@ export const formatDate = (val: string) => {
     d.getFullYear().toString()
   )
 }
+
+export const toCapitalize = (text: string) =>
+  text.charAt(0).toUpperCase() + text.slice(1)

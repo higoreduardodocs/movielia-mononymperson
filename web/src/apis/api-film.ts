@@ -65,3 +65,56 @@ export const apiGenders = async (mediaType: MediaType): Promise<IGender[]> => {
     throw err
   }
 }
+
+export const apiDiscover = async (
+  mediaType: MediaType,
+  page = 1
+): Promise<{ films: IFilm[]; totalPages: number }> => {
+  try {
+    const { data } = await api.get<
+      unknown,
+      AxiosResponse<{
+        results: unknown[]
+        total_pages: number
+      }>
+    >(`/discover/${mediaType}`, {
+      params: { page },
+    })
+
+    return {
+      films: data.results.map((item) => formatFilmResponse(item, mediaType)),
+      totalPages: data.total_pages,
+    }
+  } catch (err) {
+    console.log(err)
+    throw err
+  }
+}
+
+export const apiTopRated = async (
+  mediaType: MediaType,
+  page = 1
+): Promise<{
+  films: IFilm[]
+  totalPages: number
+}> => {
+  try {
+    const { data } = await api.get<
+      unknown,
+      AxiosResponse<{
+        total_pages: number
+        results: unknown[]
+      }>
+    >(`/${mediaType}/top_rated`, {
+      params: { page },
+    })
+
+    return {
+      films: data.results.map((item) => formatFilmResponse(item, mediaType)),
+      totalPages: data.total_pages,
+    }
+  } catch (err) {
+    console.log(err)
+    throw err
+  }
+}
