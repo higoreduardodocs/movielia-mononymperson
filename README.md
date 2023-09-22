@@ -1,4 +1,4 @@
-# :desktop_computer: Movie React application project
+# :desktop_computer: Movie Application
 
 <p align="center"><img src="./assets/cover.png" alt="Cover projeto" /><p>
 
@@ -20,4 +20,4 @@
 
 ## :page_facing_up: Docs
 
-- TheMovieDB: [Docs](`https://developer.themoviedb.org/docs`)
+- TheMovieDB: [Docs](https://developer.themoviedb.org/docs)
